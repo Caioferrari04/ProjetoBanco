@@ -11,8 +11,8 @@ public class Conta
 
     public void Sacar(double valor) 
     {
-        if(valor < 0)
-            throw new ApplicationException("Valor invalido: valor nao pode ser negativo");
+        _validarValor(valor);
+
         if(valor > Saldo)
             throw new ApplicationException("Valor invalido: voce nao possui o saldo suficiente para essa operacao");
 
@@ -22,17 +22,21 @@ public class Conta
 
     public void Depositar(double valor) 
     {
-        if(valor < 0)
-            throw new ApplicationException("Valor invalido: valor nao pode ser negativo");
-
+        _validarValor(valor);        
         Saldo = Saldo + valor;
     }
 
     public void Transferir(double valor, Conta conta)
     {
-        this.Sacar(valor);
+        Sacar(valor);
         conta.Depositar(valor);
     }
     
-    public override string ToString() => $"Código da conta: {this.Codigo}\nSaldo da conta: {this.Saldo}";
+    public override string ToString() => $"Código da conta: {Codigo}\nSaldo da conta: {Saldo}";
+
+    private void _validarValor(double valor)
+    {
+        if(valor <= 0.0)
+            throw new ApplicationException("Valor invalido: valor nao pode ser menor ou igual a zero");
+    }
 }
